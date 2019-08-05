@@ -1,4 +1,4 @@
-# WIP: docker-standalone-webdev-ci-stack
+# WIP: Docker Standalone Webdev CI Stack
 Made to be able to reinstall my OS, install Docker and start webdeveloping instantly 
 
 ## Stack
