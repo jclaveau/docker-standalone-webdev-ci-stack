@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  app:
+    image: fauria/lamp
+    volumes:
+      - .:/var/www/html
+    expose:
+      - "80"
+    labels:
+      - traefik.http.routers.example-lamp.rule=Host(`example-lamp.localhost`)
+    networks:
+      - web
+      - default
+
+networks:
+  web:
+    external:
+      name: docker-standalone-webdev-ci-stack_default
