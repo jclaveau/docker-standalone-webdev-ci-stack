@@ -10,8 +10,8 @@ Made to be able to reinstall my OS, install Docker and start webdeveloping insta
 ## Usage
 + docker-compose up -d
 + Go to http://gitea.localhost
-+ Setup gitea, create the administrator and a repo
-+ Clone the repo
++ Create the administrator and a repo
++ Clone your repo
 + Copy the example you want inside, customize its config/content
 + Push
 
