@@ -24,30 +24,27 @@ services:
         max-size: 100m
     labels:
       - traefik.http.routers.dnsmasq.rule=Host(`dnsmasq.localhost`)
-      - traefik.http.services.traefik.loadbalancer.server.port=8080
-      # - "traefik.frontend.rule=Host:dnsmasq.localhost,www.dnsmasq.localhost"
-      # - "traefik.enable=true"
-      # - "traefik.port=8080"
-      # - "traefik.backend=dnsmasq"
-      # - "traefik.frontend.headers.SSLRedirect=true"
-      # - "traefik.frontend.headers.STSSeconds=315360000"
-      # - "traefik.frontend.headers.browserXSSFilter=true"
-      # - "traefik.frontend.headers.contentTypeNosniff=true"
-      # - "traefik.frontend.headers.forceSTSHeader=true"
-      # - "traefik.frontend.headers.STSIncludeSubdomains=true"
-      # - "traefik.frontend.headers.STSPreload=true"
-      # - "traefik.frontend.headers.frameDeny=true"
+      - traefik.http.services.dnsmasq.loadbalancer.server.port=8080
+      - traefik.http.routers.dnsmasq.entrypoints=http
+      
+      # - traefik.http.middlewares.dnsmasq.headers.stsseconds=315360000
+      # - traefik.http.middlewares.dnsmasq.headers.stspreload=true
+      # - traefik.http.middlewares.dnsmasq.headers.sslredirect=true
+      # - traefik.http.middlewares.dnsmasq.headers.contenttypenosniff=true
+      # - traefik.http.middlewares.dnsmasq.headers.custombrowserxssvalue=true
+      # - traefik.http.middlewares.dnsmasq.headers.forcestsheader=true
+      # - traefik.http.middlewares.dnsmasq.headers.stsincludesubdomains=true
+      # - traefik.http.middlewares.dnsmasq.headers.framedeny=true
       
   traefik:
     container_name: traefik
     image: traefik:2.0 # The official Traefik docker image
-    # command: --api --providers.docker --logLevel=DEBUG # Enables the web UI and tells Traefik to listen to docker
-    # command: --api --providers.docker # Enables the web UI and tells Traefik to listen to docker
     command:
       - --providers.docker
+      - --api              # enalbe web UI
       - --entrypoints.http.address=:80
       - --entrypoints.ssh.address=:22
-      - --api
+      # - --logLevel=DEBUG
     ports:
       - "80:80"           # The HTTP port
       - "443:443"         # The HTTPS port
@@ -57,31 +54,16 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
       - ./logs:/logs # Traefik log
       - ./traefik-2.0.toml:/etc/traefik/traefik.toml # Traefik configuration file
-      # - ./traefik.toml:/etc/traefik/traefik.toml # Traefik configuration file
-      # - ./traefik_config:/etc/traefik # Traefik configuration file
     labels:
       - traefik.http.routers.traefik.rule=Host(`traefik.localhost`)
       - traefik.http.services.traefik.loadbalancer.server.port=8080
-      # - "traefik.frontend.rule=Host:traefik.localhost"
-      # - "traefik.port=8080"
+      - traefik.http.routers.traefik.entrypoints=http
       
   whoami:
     container_name: whoami
     image: containous/whoami # A container that exposes an API to show its IP address
     labels:
       - traefik.http.routers.whoami.rule=Host(`whoami.localhost`)
-      - "traefik.frontend.rule=Host:whoami.docker.localhost"
-
-  test-website-1:
-    container_name: test-website-1
-    image: fauria/lamp
-    volumes:
-      - ./test-website-1:/var/www/html
-    expose:
-      - "80"
-    labels:
-      - traefik.http.routers.test-website-1.rule=Host(`test-website-1.localhost`)
-      # - "traefik.frontend.rule=Host:test-website-1.localhost"
 
   gitea:
     container_name: gitea
@@ -90,22 +72,12 @@ services:
       - USER_UID=1000
       - USER_GID=1000
     restart: always
-    # networks:
-      # - gitea
     volumes:
       - ./gitea:/data
     expose:
       - "3000"
       - "22"
     labels:
-      # - traefik.http.routers.gitea.rule=Host(`gitea.localhost`)
-      # - traefik.http.services.gitea.loadbalancer.server.port=3000
-      # - traefik.tcp.routers.gitea.rule=HostSNI(`gitea.localhost`)
-      # - traefik.tcp.routers.gitea.rule=HostSNI(`gitea.localhost`)
-      # - traefik.tcp.services.gitea.loadbalancer.server.port=22
-      # - traefik.tcp.routers.gitea.tls=true
-      # - traefik.tcp.routers.gitea.tls.passthrough=true
-
       - "traefik.enable=true"
       - "traefik.http.routers.gitea-web.rule=Host(`gitea.localhost`)"
       - "traefik.http.routers.gitea-web.entrypoints=http"
