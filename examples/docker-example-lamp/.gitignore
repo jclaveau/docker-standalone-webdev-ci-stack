@@ -1,0 +1,7 @@
+.directory
+/db 
+/log/apache2/* 
+/log/auth.log 
+/log/syslog 
+/log/messages 
+/log/cron.log

@@ -1,19 +1,50 @@
 version: '3.3'
 
-services:
-  app:
-    image: fauria/lamp
-    volumes:
-      - .:/var/www/html
-    expose:
-      - "80"
-    labels:
-      - traefik.http.routers.example-lamp.rule=Host(`example-lamp.localhost`)
-    networks:
-      - web
-      - default
-
 networks:
-  web:
+  public:
     external:
       name: docker-standalone-webdev-ci-stack_default
+
+services:
+  web:
+    container_name: web
+    image: jtreminio/php-apache:5.6
+    # image: jtreminio/php-apache:7.3 # choose your PHP version here
+    labels:
+      - traefik.http.routers.example-lamp-web.rule=Host(`example-lamp.localhost`)
+    networks:
+      - public
+    volumes:
+      - ./www:/var/www/
+      - ./log:/var/log/
+      - ./vhost.conf:/etc/apache2/sites-enabled/example-lamp.conf
+    environment:
+      - PHP.display_errors=On
+      - PHP.error_reporting=-1
+      - PHPFPM_XDEBUG=On
+
+  mariadb:
+    container_name: mariadb
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - public
+    volumes:
+      - ./db:/var/lib/mysql
+      
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: root
+      PMA_ARBITRARY: 1
+      PMA_HOST: mariadb       
+    restart: always
+    volumes:
+      - "/sessions"
+    labels:
+      - traefik.http.routers.example-lamp-phpmyadmin.rule=Host(`pma.example-lamp.localhost`)
+    networks:
+      - public
