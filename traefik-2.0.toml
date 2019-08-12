@@ -25,6 +25,8 @@
   address = ":80"
   [entryPoints.ssh]
   address = ":22"
+  [entryPoints.mysql]
+  address = ":3306"
 
 ################################################################
 # Traefik logs configuration
