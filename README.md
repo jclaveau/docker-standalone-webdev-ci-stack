@@ -2,9 +2,10 @@
 Made to be able to reinstall my OS, install Docker and start webdeveloping instantly 
 
 ## Stack
-+ dnsmasq
++ Dnsmasq
 + Traefik 2
-+ gitea
++ Gitea
++ Drone CI 1.2
 
 
 ## Usage
@@ -20,6 +21,7 @@ Made to be able to reinstall my OS, install Docker and start webdeveloping insta
 + http://dnsmasq.localhost
 + http://traefik.localhost
 + http://gitea.localhost
++ http://drone.localhost
 
 
 ## Examples
