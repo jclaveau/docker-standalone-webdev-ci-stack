@@ -44,12 +44,14 @@ services:
       - --api              # enalbe web UI
       - --entrypoints.http.address=:80
       - --entrypoints.ssh.address=:22
+      - --entrypoints.mysql.address=:3306
       # - --logLevel=DEBUG
     ports:
       - "80:80"           # The HTTP port
       - "443:443"         # The HTTPS port
       - "8080:8080"       # The Web UI (enabled by --api)
       - "22:22"           # SSH (for Git)
+      - "3306:3306"       # MySQL
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
       - ./logs:/logs # Traefik log
