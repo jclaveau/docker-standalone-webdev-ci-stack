@@ -13,7 +13,8 @@ services:
     ports:
       - "127.0.0.1:53:53"     # The DNS (netstat -anlp | grep -w LISTEN => If consumed by systemd: https://medium.com/@niktrix/getting-rid-of-systemd-resolved-consuming-port-53-605f0234f32f)
     volumes:
-      - ./dnsmasq.conf:/etc/dnsmasq.conf
+      - ./dnsmasq/etc/dnsmasq.conf:/etc/dnsmasq.conf
+      - ./dnsmasq/var/log:/var/log
     cap_add:
       - NET_ADMIN
     environment:

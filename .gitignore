@@ -1,3 +1,4 @@
 gitea
+/dnsmasq/var/log
 drone
 .directory 
