@@ -22,6 +22,9 @@ services:
       - PHP.display_errors=On
       - PHP.error_reporting=-1
       - PHPFPM_XDEBUG=On
+      - PHP_INI_SCAN_DIR=:/etc/php/extra-mods/  # Enable all optionnal modules: https://github.com/jtreminio/php-docker#installed-modules
+      - FPM.security.limit_extensions=          # avoids "Access Denied" due to "RewriteRule ^(.*)$ index.php/$0 [QSA,L]"
+      - PHP.cgi.fix_pathinfo=1                  # Avoids "Undefined Index 'PATH_INFO'" in FPM mode
 
   mariadb:
     container_name: mariadb
