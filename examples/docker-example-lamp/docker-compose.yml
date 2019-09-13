@@ -17,7 +17,7 @@ services:
     volumes:
       - ./www:/var/www/
       - ./log:/var/log/
-      - ./vhost.conf:/etc/apache2/sites-enabled/example-lamp.conf
+      - ./vhost.conf:/etc/apache2/sites-enabled/default.conf
     environment:
       - PHP.display_errors=On
       - PHP.error_reporting=-1
